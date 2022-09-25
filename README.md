@@ -1,19 +1,23 @@
 # Desktop-Assistant
 This project is completely built on NLP (Natural Language Processing). For the model to communicate to the internet and get the answer to the quarries this model is using wolframalpha library, to open the application and save files this model is using OS library which helps the python program to communicate to the device files and command prompt. Tkinter library is being used for the user interface.
-
+<<Information>>
+The new vaersion just dropped. Desktop Assistant is being updated with 2 more exciting functionalities they are:
+(i) Shutdown feture. This feture enables us to shutdown the device with voice and button
+(ii)Clipcoard fetutre. This feture helps us to convert the text in the clipboard in to a notepad file.
+ 
 Libraries need to be downloaded:
 
-import os
+import os(pip install os)
 
-import pyttsx3
+import pyttsx3(pip install pyttsx3)
 
-import speech_recognition as sr
+import speech_recognition as sr(pip install SpeechRecognition)
 
-import wolframalpha
+import wolframalpha(pip install wolframalpha)
 
 from tkinter import *
 
-import tkinter as tk
+import tkinter as tk(pip install tkinter)
 
 Following is the screenshots of Desktop Assistant Main Screen:
 
