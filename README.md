@@ -1,5 +1,6 @@
 # Desktop-Assistant
 This project is completely built on NLP (Natural Language Processing). For the model to communicate to the internet and get the answer to the quarries this model is using wolframalpha library, to open the application and save files this model is using OS library which helps the python program to communicate to the device files and command prompt. Tkinter library is being used for the user interface.
+
 <<Information>>
 The new vaersion just dropped. Desktop Assistant is being updated with 2 more exciting functionalities they are:
 (i) Shutdown feture. This feture enables us to shutdown the device with voice and button
