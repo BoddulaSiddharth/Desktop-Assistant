@@ -5,9 +5,9 @@ This project is completely built on NLP (Natural Language Processing). For the m
  
 The new version just dropped. Desktop Assistant is being updated with 2 more exciting functionalities they are:
  
-(i) Shutdown feture. This feture enables us to shutdown the device with voice and button
- 
-(ii)Clipcoard fetutre. This feture helps us to convert the text in the clipboard in to a notepad file.
+(i) Shutdown feature. This feature enables us to shut down the device with voice and button
+
+(ii)Clipboard feature. This feature helps us to convert the text in the clipboard into a notepad file.
  
 Libraries need to be downloaded:
 
