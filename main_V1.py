@@ -309,7 +309,7 @@ shutdown = tk.Button(root, text='Shutdown',command = shutdown,bg='orange')  # bu
 canvas1.create_window(350, 300,window=shutdown)
 clip = tk.Button(root, text='Save clipboard to notepad',command = clipboard,bg='orange')  # button to call the 'values' command above
 canvas1.create_window(100, 400,window=clip)
-clip = tk.Button(root, text='Read clipboard',command = read_clipboard,bg='orange')  # button to call the 'values' command above
+clip = tk.Button(root, text='Read clipboard',command=read_clipboard,bg='orange')  # button to call the 'values' command above
 canvas1.create_window(255, 400,window=clip)
 root.mainloop()
 
