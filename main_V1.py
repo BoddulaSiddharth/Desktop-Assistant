@@ -1,45 +1,25 @@
 import os
+import tkinter
+
 import pyttsx3
 import speech_recognition as sr
 import wolframalpha
 from tkinter import *
 import tkinter as tk
 from time import sleep
-#import tweepy
-#import configparser
-#import pandas as pd
-#config = configparser.ConfigParser()
-#config.read("config.ini")
-#api_key = config["twitter"]["api_key"]
-#api_key_secret = config["twitter"]["api_key_secret"]
-#access_token = config["twitter"]["access_token"]
-#access_token_secret = config["twitter"]["access_token_secret"]
-#print (api_key)
-#auth = tweepy.OAuthHandler(api_key,api_key_secret)
-#auth.set_access_token(access_token,access_token_secret)
-#api = tweepy.API(auth)
-#public_tweets = api.home_timeline()
-#columns = ['Time', 'User', 'Tweet']
-#data = []
-#for tweet in public_tweets:
-#    data.append([tweet.created_at, tweet.user.screen_name, tweet.text])
-
-#df = pd.DataFrame(data, columns=columns)
-
-#df.to_csv('tweets.csv')
 r = Tk()
-r.withdraw
-root = Tk()
-root.title("Root Window")
-root.geometry("450x600")
 
+root = Tk()
+root.title("Desktop Assistant")
+root.geometry("450x500")
+root.maxsize()
 canvas1 = tk.Canvas(root, width=500, height=500)
 canvas1.pack()
 label1 = tk.Label(root, text=' Desktop Assistant ', font=("Helvetica", 25), fg="orange")
 canvas1.create_window(225, 50, window=label1)
 import logging    # first of all import the module
 
-logging.basicConfig(filename='std.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='../Backend/std.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 logging.warning('This message will get logged on to a file')
 logger=logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -47,20 +27,6 @@ def help_toplevel():
     top2 = Toplevel()
     top2.title("Toplevel2")
     top2.geometry("800x430")
-    help_lable = tk.Label(top2, text='Help', font=("Helvetica", 25), fg="orange").place(x=100, y=100)
-    point_0 = tk.Label(top2,text = "#Instruction below for voice Assistance",font=("Helvetica", 15),
-                       fg="orange").place(x=100,y=150)
-    point_0_1 = tk.Label(top2,text = "Say 'can you answer the question' before trying to ask an question.",font=("Helvetica", 15),
-                       fg="orange").place(x=100,y=200)
-    point_1 = tk.Label(top2, text="# Say 'what is the time' before trying to ask what is the time.", font=("Helvetica", 15),
-                       fg="orange").place(x=100, y=245)
-    point_2 = tk.Label(top2, text="Say 'notepad' or 'note down' before enabling the notepad function. ", font=("Helvetica", 15),
-                       fg="orange").place(x=100, y=290)
-    point_3 = tk.Label(top2, text='# Say ''" ', font=("Helvetica", 15),
-                       fg="orange").place(x=100, y=340)
-
-    help_buttton_exit = tk.Button(top2, text='EXIT', command=top2.destroy, bg='orange').place(x=235, y=370)
-    top2.mainloop()
 
 def main_voice():
     assistant_speaks("What can i do for you?")
@@ -74,6 +40,8 @@ def main_voice():
         process_text(text)
     if text == "can you answer a question":
         process_text(text)
+    if text == "save clipboard to notepad":
+        process_text(text)
     if text == "shutdown":
         process_text(text)
     if text == "thank you":
@@ -81,8 +49,8 @@ def main_voice():
 def save():
     global gv_language
     global gv_phrase_time
-    language = str(var2.get())
-    phrase_time = int(var1.get())
+    language = (var2.get())
+    phrase_time = (var1.get())
     print(var1.get())
     print(var2.get())
     gv_phrase_time = phrase_time
@@ -93,6 +61,7 @@ def save():
 def settings_toplevel():
     global var1
     global var2
+
     var1 = tk.StringVar()
     var2 = tk.StringVar()
     top1 = Toplevel(root)
@@ -123,17 +92,17 @@ def settings_toplevel():
 
 
 num = 1
-def assistant_speaks(output):
-    print("PerSon : ", output)
-    SpeakText(output)
 def shutdown():
     logger.info("Device was kept into sleep")
     os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-
+def assistant_speaks(output):
+    print("PerSon : ", output)
+    SpeakText(output)
 def open_chrome():
     os.startfile('"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk"')
     assistant_speaks("Chrome Opened")
     logger.info("Chrome Opened using button")
+
 def open_word():
     os.startfile('"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Word.lnk"')
     assistant_speaks("Word Opened")
@@ -192,14 +161,21 @@ def clipboard():
     while not r.selection_get(selection="CLIPBOARD"):
         sleep(0.1)
     result = r.selection_get(selection="CLIPBOARD")
-    r.clipboard_clear()
-    r.destroy()
+#    r.clipboard_clear()
+#    r.option_clear()
+    #r.destroy()
+
     assistant_speaks("The file is save in a notepad with the file name 'Clipboard'")
-    file = open("Clipboard", 'w')
+    file = open("../Backend/Clipboard", 'w')
     text = result
-    file.write(text)
+    file.write(result)
     file.close()
     assistant_speaks("Text saved")
+def read_clipboard():
+    while not r.selection_get(selection="CLIPBOARD"):
+        sleep(0.1)
+    result = r.selection_get(selection="CLIPBOARD")
+    assistant_speaks(result)
 
 def process_text(input):
     try:
@@ -273,7 +249,8 @@ def process_text(input):
         if input == "shutdown":
             logger.info("Device was kept into sleep")
             os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-
+        if input == "save clipboard to notepad":
+            clipboard()
     except:
         print('except')
         logger.warning("none of the requests matched")
@@ -312,28 +289,30 @@ def get_audio_for_notepad():
             except:
                 assistant_speaks("Could not understand your audio, Please try again !")
                 return 0
-
-NOTEPAD = tk.Button(root, text='NOTEPAD',command = notepad, bg='orange')
-canvas1.create_window(225, 100, window=NOTEPAD)  # button to call the 'values' command above
+NOTEPAD = tk.Button(root,command = notepad,text = "Notepad", bg = "orange")
+canvas1.create_window(100, 100, window=NOTEPAD)  # button to call the 'values' command above
 HELP = tk.Button(root, text='HELP', command=help_toplevel, bg='orange')  # button to call the 'values' command above
-canvas1.create_window(225, 150, window=HELP)
+canvas1.create_window(225, 100, window=HELP)
 chrome = tk.Button(root,text = "Open Chrome",command=open_chrome, bg='orange')
-canvas1.create_window(225, 200, window=chrome)
+canvas1.create_window(300, 100, window=chrome)
 word = tk.Button(root,text = "Open Word",command=open_word, bg='orange')
-canvas1.create_window(225, 250, window=word)
+canvas1.create_window(100, 200, window=word)
 excel = tk.Button(root,text = "Open Excel",command=open_excel, bg='orange')
-canvas1.create_window(225, 300, window=excel)
+canvas1.create_window(225, 200, window=excel)
 question_123 = tk.Button(root,text = "Anewer a Question",command=question, bg='orange')
-canvas1.create_window(225, 350, window=question_123)
+canvas1.create_window(350, 200, window=question_123)
 SETTINGS = tk.Button(root, text='SETTINGS',command = settings_toplevel,bg='orange')  # button to call the 'values' command above
-canvas1.create_window(225, 400,window=SETTINGS)
-shutdown = tk.Button(root,text = "Shutdown", command = shutdown, bg = "orange" )
-canvas1.create_window(225,450,window = shutdown)
-clip_button = tk.Button(root,text= "Create the clipboard text file", command = clipboard, bg = "orange")
-canvas1.create_window(225,500,window=clip_button)
+canvas1.create_window(100, 300,window=SETTINGS)
 voice_button = tk.Button(root, text='🎙️Voice' ,command =main_voice ,bg='orange')
-canvas1.create_window(225, 550,window=voice_button)
+canvas1.create_window(225, 300,window=voice_button)
+shutdown = tk.Button(root, text='Shutdown',command = shutdown,bg='orange')  # button to call the 'values' command above
+canvas1.create_window(350, 300,window=shutdown)
+clip = tk.Button(root, text='Save clipboard to notepad',command = clipboard,bg='orange')  # button to call the 'values' command above
+canvas1.create_window(100, 400,window=clip)
+clip = tk.Button(root, text='Read clipboard',command = read_clipboard,bg='orange')  # button to call the 'values' command above
+canvas1.create_window(255, 400,window=clip)
 root.mainloop()
+
 
 
 
